@@ -1,0 +1,11 @@
+{
+  "model": {
+    "version": "chainlab_v1",
+    "states": ["A", "B"],
+    "symbols": ["x", "y"],
+    "initial": [0.6, 0.4],
+    "transition": [[0.7, 0.3], [0.2, 0.8]],
+    "emission": [[0.8, 0.2], [0.1, 0.9]]
+  },
+  "sequence": ["x", "y", "x"]
+}
