@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="780" viewBox="0 0 900 780" role="img" aria-labelledby="title desc">
+<title id="title">ChainLab: train sequences, distinguish marginal states from valid paths</title>
+<desc id="desc">EM training log likelihood increases across20 updates. A separate exact three-state example has marginal modes A/A with a forbidden transition while Viterbi returns valid path B/A.</desc>
+<rect width="900" height="780" fill="#fff"/><g font-family="Arial,sans-serif" fill="#251f21">
+<text x="40" y="40" font-size="28" font-weight="600" fill="#251f21">Learn sequence structure. Audit the path.</text>
+<text x="40" y="69" font-size="16" font-weight="400" fill="#251f21">Baum-Welch training on 20 independent synthetic sequences, 40 symbols each.</text>
+<text x="40" y="108" font-size="16" font-weight="400" fill="#251f21">Training log likelihood (higher is better)</text>
+<line x1="90" x2="830" y1="335.0" y2="335.0" stroke="#eae9ea"/>
+<text x="43" y="340.0" font-size="14" font-weight="400" fill="#251f21">-850</text>
+<line x1="90" x2="830" y1="294.0" y2="294.0" stroke="#eae9ea"/>
+<text x="43" y="299.0" font-size="14" font-weight="400" fill="#251f21">-800</text>
+<line x1="90" x2="830" y1="253.0" y2="253.0" stroke="#eae9ea"/>
+<text x="43" y="258.0" font-size="14" font-weight="400" fill="#251f21">-750</text>
+<line x1="90" x2="830" y1="212.0" y2="212.0" stroke="#eae9ea"/>
+<text x="43" y="217.0" font-size="14" font-weight="400" fill="#251f21">-700</text>
+<line x1="90" x2="830" y1="171.0" y2="171.0" stroke="#eae9ea"/>
+<text x="43" y="176.0" font-size="14" font-weight="400" fill="#251f21">-650</text>
+<line x1="90" x2="830" y1="130.0" y2="130.0" stroke="#eae9ea"/>
+<text x="43" y="135.0" font-size="14" font-weight="400" fill="#251f21">-600</text>
+<text x="84.0" y="359" font-size="14" font-weight="400" fill="#251f21">0</text>
+<text x="269.0" y="359" font-size="14" font-weight="400" fill="#251f21">5</text>
+<text x="454.0" y="359" font-size="14" font-weight="400" fill="#251f21">10</text>
+<text x="639.0" y="359" font-size="14" font-weight="400" fill="#251f21">15</text>
+<text x="824.0" y="359" font-size="14" font-weight="400" fill="#251f21">20</text>
+<polyline points="90.00,310.76 127.00,238.42 164.00,193.78 201.00,175.04 238.00,172.54 275.00,172.27 312.00,172.20 349.00,172.16 386.00,172.15 423.00,172.14 460.00,172.14 497.00,172.14 534.00,172.14 571.00,172.14 608.00,172.14 645.00,172.14 682.00,172.14 719.00,172.14 756.00,172.14 793.00,172.14 830.00,172.14" fill="none" stroke="#34715f" stroke-width="3"/>
+<text x="380" y="381" font-size="15" font-weight="400" fill="#251f21">Accepted EM updates</text>
+<text x="40" y="406" font-size="16" font-weight="400" fill="#251f21">Initial -820.4336; final -651.3909. No smoothing or validation selection.</text>
+<text x="40" y="450" font-size="23" font-weight="600" fill="#251f21">Posterior modes are not a path decoder</text>
+<text x="40" y="478" font-size="16" font-weight="400" fill="#251f21">Separate exact counterexample: observations x, x; transition A to A has probability zero.</text>
+<text x="40" y="518" font-size="15" font-weight="400" fill="#251f21">State posterior</text>
+<text x="300" y="518" font-size="16" font-weight="600" fill="#251f21">A</text>
+<text x="470" y="518" font-size="16" font-weight="600" fill="#251f21">B</text>
+<text x="640" y="518" font-size="16" font-weight="600" fill="#251f21">C</text>
+<text x="40" y="553" font-size="16" font-weight="400" fill="#251f21">Time 0</text>
+<text x="300" y="553" font-size="18" font-weight="600" fill="#34715f">0.40</text>
+<text x="470" y="553" font-size="18" font-weight="400" fill="#251f21">0.35</text>
+<text x="640" y="553" font-size="18" font-weight="400" fill="#251f21">0.25</text>
+<text x="40" y="588" font-size="16" font-weight="400" fill="#251f21">Time 1</text>
+<text x="300" y="588" font-size="18" font-weight="600" fill="#34715f">0.60</text>
+<text x="470" y="588" font-size="18" font-weight="400" fill="#251f21">0.20</text>
+<text x="640" y="588" font-size="18" font-weight="400" fill="#251f21">0.20</text>
+<text x="40" y="637" font-size="18" font-weight="600" fill="#b82e39">Marginal modes: A / A. Forbidden transition, joint probability zero.</text>
+<text x="40" y="671" font-size="18" font-weight="600" fill="#34715f">Viterbi path: B / A. Valid; posterior probability 0.35.</text>
+<text x="40" y="713" font-size="15" font-weight="400" fill="#251f21">Marginals condition on the whole observed sequence. Do not multiply them as a path score.</text>
+<text x="40" y="742" font-size="15" font-weight="400" fill="#251f21">Development fixture, seed23. Finite EM stop; no true-state recovery or universal ranking claim.</text>
+</g></svg>
