@@ -66,3 +66,31 @@ def run_demo():
                     'Generating model is an oracle reference, not a learned competitor or guaranteed best finite-sample score. '
                     'iid control learns empirical symbol frequencies with no state transitions. No universal ranking, '
                     'true-state recovery, production anomaly-detection or causal interpretation claim.'}
+
+
+def run_online_demo():
+    from .online import filter_sequence,forecast
+    # Absorbing states make future evidence's effect on an earlier state exact.
+    example={'version':'chainlab_v1','states':['A','B'],'symbols':['x','y'],
+             'initial':[.5,.5],'transition':[[1,0],[0,1]],'emission':[[1,0],[.5,.5]]}
+    sequence=['x','y'];filtered=filter_sequence(example,sequence);smoothed=infer(example,sequence)
+    truth,initial,train,test=fixture();trained=fit(initial,train,iterations=30,tolerance=1e-6)['model']
+    online_ll=math.fsum(filter_sequence(trained,seq)['log_likelihood'] for seq in test)
+    batch_ll=math.fsum(infer(trained,seq)['log_likelihood'] for seq in test)
+    return {'future_information_counterexample':{'model':example,'sequence':sequence,
+               'filtered_state_posteriors':filtered['filtered_state_posteriors'],
+               'full_sequence_smoothed_posteriors':smoothed['state_posteriors'],
+               'prior_predictive_symbol_probabilities':filtered['prior_predictive_symbol_probabilities'],
+               'observed_log_predictive':filtered['observed_log_predictive'],
+               'forecast_after_x':forecast(example,['x'],3),
+               'scope':'At time0, x-only filtering gives P(A)=2/3. Full x/y smoothing gives P(A)=0, using future y. '
+                       'Using that smoothed row for an online decision at time0 would leak future evidence.'},
+            'trained_fixture_likelihood_audit':{'test_sequences':len(test),'observations':sum(map(len,test)),
+               'prefix_log_predictive_sum':online_ll,'forward_backward_log_likelihood_sum':batch_ll,
+               'absolute_difference':abs(online_ll-batch_ll),
+               'mean_negative_log_predictive':-online_ll/sum(map(len,test))},
+            'trained_prefix_example':{'conditioning_symbols':test[0][:10],
+                                      'forecast':forecast(trained,test[0][:10],5)},
+            'scope':'Same seed23 development fixture and supplied training protocol as the main demo. '
+                    'Prequential scores reset for each independent test sequence; no test fitting or future symbol conditioning. '
+                    'Equality of likelihood computations checks implementation, not predictive quality or calibration.'}
