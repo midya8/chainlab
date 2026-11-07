@@ -20,3 +20,17 @@ PY
 python -m chainlab infer --input /tmp/chainlab-trained-request.json
 PYTHONPATH=. python examples/render_demo.py
 git diff --exit-code -- assets/sequence-audit.svg 2>/dev/null || { test ! -d .git; }
+python -m chainlab online-demo
+python -m chainlab filter --input examples/request.json >/tmp/chainlab-filter.json
+python -m chainlab forecast --input examples/request.json --horizon 3 >/tmp/chainlab-forecast.json
+python - <<'PY'
+import json
+from chainlab import infer
+with open('examples/request.json') as source:request=json.load(source)
+with open('/tmp/chainlab-filter.json') as source:online=json.load(source)
+with open('/tmp/chainlab-forecast.json') as source:future=json.load(source)
+assert abs(online['log_likelihood']-infer(request['model'],request['sequence'])['log_likelihood'])<1e-12
+assert len(future['forecasts'])==3
+assert all(abs(sum(row['symbol_probabilities'])-1)<1e-12 for row in future['forecasts'])
+print('prefix predictive scores match full likelihood; unobserved future marginals normalize')
+PY
