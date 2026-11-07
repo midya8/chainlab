@@ -73,6 +73,74 @@ on test sequences uses future symbols, not an online prediction benchmark.
 One selected persistent-regime development fixture does not establish general
 rankings, anomaly-detection performance or calibration.
 
+## Prefix filtering and unobserved-future forecasts
+
+```python
+from chainlab import filter_sequence, forecast
+
+online = filter_sequence(model, ["x", "y", "x"])
+future = forecast(model, ["x", "y"], horizon=3)
+```
+
+The `model` is the same validated `chainlab_v1` artifact used by infer/fit.
+`filter_sequence` returns a state posterior for each prefix, prior-predictive
+symbol probabilities **before** its symbol is observed, each observed symbol's
+log predictive score, and prefix log likelihoods. At time0 the prediction uses
+the initial state distribution; later steps transition the last filtered state.
+It never uses later observations to update an earlier row. This is a batch
+prefix audit, not a persistent streaming session or evidence that the supplied
+model was trained without future-data leakage.
+
+The difference from smoothing is exact on a two-state example: absorbing states
+A/B, initial0.5/0.5, emissions A:[1,0], B:[0.5,0.5] for symbols x/y.
+
+| State inference | Available observations | P(state A at time0) |
+|---|---|---:|
+| Filtering after first symbol | x | 2/3 |
+| Full-sequence smoothing after both | x,y | 0 |
+
+Using the smoothed row for an online decision at time0 would use future y.
+The final filtered and final smoothed rows agree because they have the same
+evidence at that time. This is a conditioning difference, not a performance
+contest between algorithms.
+
+Log posterior messages stay in log space between steps, so a path with a
+raw-probability product below binary64 range can still become the only supported
+state after a later observation. Printed probability entries can underflow to
+zero even with a finite `observed_log_predictive`; the log scores are the
+likelihood record, not `log` of the rounded probability table.
+
+`forecast` accepts horizon1-32 and conditions on the whole supplied **past**
+sequence. Horizon1 transitions once from the last conditioned state, then
+predicts its emission. Each later step propagates states again without
+assimilating any guessed observation. Returned state/symbol distributions are
+**marginals**, not a joint future path and not independent across horizons.
+In the absorbing-state example after x, each future marginal has P(y)=1/6,
+but P(y,y)=1/12, not (1/6)^2. The implementation does not multiply forecast
+marginals or feed their modes back as observed evidence.
+
+```sh
+python -m chainlab filter --input examples/request.json
+python -m chainlab forecast --input examples/request.json --horizon 3
+python -m chainlab online-demo
+```
+
+On the same trained seed23 development fixture, summed prefix predictive log
+scores across12 independent test sequences (480 symbols) are -372.302842489947,
+versus -372.30284248994707 from full forward likelihood: absolute difference
+5.68e-14 on this run. Mean negative log predictive score is0.775630921854.
+Every sequence resets to the model's initial distribution. This equality is an
+implementation audit, not a new quality improvement or calibration result.
+The demo forecasts five steps after only the first10 symbols of one test
+sequence; no future symbols enter those distributions.
+
+Filtering costs O(T*(N^2+N*M)) for alphabet size M and stores the prefix outputs.
+Forecasts add O(H*(N^2+N*M)); no xi matrices or backward pass are needed. Results
+are numerically normalized, with filtering mass-error diagnostics. Existing
+model bounds, impossible-prefix rejection and no input mutation still apply.
+No stateful streaming API, adaptive model update, calibrated forecast promise,
+or proof that a caller's training protocol is leak-free.
+
 ## Artifact and cost boundary
 
 Strict chainlab_v1: ordered states/symbols, initial vector, transition matrix,
@@ -84,11 +152,13 @@ N1-8, alphabet1-16, T1-256;1-32 training sequences,total<=2048. Full gamma/xi
 inference costs O(T*N^2) time/storage at the xi output scale. Viterbi also
 computes inference for its posterior score, so its implementation is not the
 minimal-memory path-only variant. Training repeats E-steps and proposal scoring.
-No dense accelerator, neural component, forecasting or online filter claim.
+Prefix filtering and marginal forecasts are separate methods; no dense
+accelerator, neural component, persistent streaming-state or calibrated forecast claim.
 
 ## Sources
 
 - https://www.cs.cmu.edu/~cga/behavior/rabiner1.pdf
+- https://www.stats.ox.ac.uk/~caron/teaching/sb1b/slideshmm.pdf
 - https://sites.stat.washington.edu/mmp/courses/stat534/spring19/Handouts/h4-hmm.pdf
 
 Standard HMM/EM theory. Independent implementation, no new algorithm claim.
