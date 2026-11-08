@@ -245,3 +245,10 @@ the SVG and checks it against the committed output.
 Independent educational implementation of standard algorithms, not copied HMM
 library code or new sequence-model theory. Synthetic data is labeled, not
 attributed to real customers or an external evaluation. MIT license.
+
+
+## v0.2: the evidence boundary is visible
+
+The live prefix-evidence inspector keeps all original HMMs, training and scores fixed. Edit a displayed symbol, move the observed-prefix boundary and separate filtering from full-window smoothing, Viterbi paths from marginal modes, and prefix-only forecast marginals from joint future evidence. Both exact adverse examples remain available. The first three models display the first 12 observations of the original 40-symbol test sequence, explicitly labeled.
+
+41 Python tests and four Node/actual-Chrome tests cover 114 position/symbol controls (including no-ops), 40 prefix witnesses, independent 70-digit tiny exhaustive path checks, separate browser scaling versus native log inference, invalidation/exports and responsive views. Installed reproduction imports eight modules and runs nine commands. Original state-recovery, causal, calibration and development-fixture limits remain. [EVIDENCE.md](EVIDENCE.md) gives numerical limits, derivations and reproduction.
