@@ -2,7 +2,7 @@
 
 Discrete hidden Markov models from scratch: log-space forward/backward,
 state and adjacent-state posteriors, Viterbi paths and unsmoothed multi-sequence
-Baum-Welch training. Dependency-free Python 3.10+, 34 tests, JSON CLI and an
+Baum-Welch training. Dependency-free Python 3.10+, 58 tests, JSON CLI and an
 offline, reproducible audit graphic. Standard HMM theory, not a new method.
 
 ![Training likelihood and a marginal-mode versus path counterexample](assets/sequence-audit.svg)
@@ -252,3 +252,14 @@ attributed to real customers or an external evaluation. MIT license.
 The live prefix-evidence inspector keeps all original HMMs, training and scores fixed. Edit a displayed symbol, move the observed-prefix boundary and separate filtering from full-window smoothing, Viterbi paths from marginal modes, and prefix-only forecast marginals from joint future evidence. Both exact adverse examples remain available. The first three models display the first 12 observations of the original 40-symbol test sequence, explicitly labeled.
 
 41 Python tests and four Node/actual-Chrome tests cover 114 position/symbol controls (including no-ops), 40 prefix witnesses, independent 70-digit tiny exhaustive path checks, separate browser scaling versus native log inference, invalidation/exports and responsive views. Installed reproduction imports eight modules and runs nine commands. Original state-recovery, causal, calibration and development-fixture limits remain. [EVIDENCE.md](EVIDENCE.md) gives numerical limits, derivations and reproduction.
+
+
+## v0.3: a path is a decision, not the uncertainty
+
+[Open the path workbench](https://midya8.github.io/chainlab/paths.html) or read [PATHS.md](PATHS.md).
+
+A separate exact-rational HMM compares MAP, supported expected matches, supported product marginals and unconstrained marginal modes. The default control gives three different supported paths, while marginal modes form an impossible one. Whole-path entropy stays separate from summed state entropies: two controls have the same state marginals but different path uncertainty. Full model and observation editing exposes every probability, conditional edge, decision state and source-bound report.
+
+Thirteen controls, 120 tiny exhaustive random checks, 150 generated native/BigInt comparisons and a standalone verifier keep probability and decoding claims exact. Entropy is approximate in nats, independently checked with Decimal80. Actual Chrome checks 296 state cells, 1,532 edge cells, 867 reachable decoding states, 39 layouts and two completed downloads. The full suite passes 58 Python and 10 Node/Chrome tests, preserving the earlier 41/four checks; installed reproduction replays both old and new commands outside the checkout.
+
+The rational inspector has explicit state/sequence, input-size and fraction-work limits. Rounded original-model examples are labeled as different rational models, not new fits. No true-state recovery, calibrated uncertainty, novelty or quality improvement is claimed. Original floating inference, training, data, scores and the prefix inspector's computations remain unchanged.
