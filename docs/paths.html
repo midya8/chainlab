@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ChainLab · Paths, losses and uncertainty</title>
+    <link rel="stylesheet" href="path.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <a href="./">ChainLab / prefix evidence</a>
+        <p class="eyebrow">
+          FINITE HIDDEN MARKOV MODELS · EXACT RATIONAL PROBABILITIES
+        </p>
+        <h1>A path is a decision.<br />It is not the uncertainty.</h1>
+        <p class="intro">
+          The most probable whole path can make more expected state errors.
+          Marginal modes can form an impossible path. And equal state marginals
+          can hide very different whole-path uncertainty.
+        </p>
+        <p>
+          Change the model below. Independent BigInt inference recomputes every
+          probability and decision. Entropy is approximate, in nats. All
+          statements condition on your supplied model and observations, not on
+          ground-truth states.
+        </p>
+      </header>
+      <section class="input-panel" aria-labelledby="input-title">
+        <h2 id="input-title">1. Choose the evidence</h2>
+        <label for="control">Control or rounded original-model example</label
+        ><select id="control"></select>
+        <p id="control-note" class="note"></p>
+        <details>
+          <summary>Edit the complete model and observation sequence</summary>
+          <p>
+            Unsigned rational strings only, such as "2/3" or "0". Each row must
+            sum to exactly one. 1–4 states, 1–8 symbols, 1–32 observations.
+            Input fractions: 128 bits. Every reported fraction: at most 8,192
+            bits. Complex exact arithmetic may refuse an otherwise valid model;
+            simplify denominators or shorten the sequence.
+          </p>
+          <label for="input">Model and observations, JSON</label
+          ><textarea id="input" rows="15" spellcheck="false"></textarea
+          ><button id="restore" type="button">Restore selected example</button>
+        </details>
+        <p id="error" role="alert"></p>
+      </section>
+      <section aria-labelledby="decisions-title">
+        <h2 id="decisions-title">2. Decide what a wrong path costs</h2>
+        <p>
+          MAP minimizes whole-path 0/1 loss. Expected matches minimizes additive
+          Hamming loss among supported paths. Product marginals is a different
+          constrained objective, not a joint path probability. Unconstrained
+          modes minimize Hamming loss without the support constraint.
+        </p>
+        <div id="decisions" class="table-wrap"></div>
+        <p class="note">
+          Hamming loss counts wrong state positions, not wrong transitions.
+          Expectations use the same full-window posterior. A smaller expected
+          loss is a model-conditional decision statement, not evidence of better
+          true-state recovery.
+        </p>
+      </section>
+      <section aria-labelledby="entropy-title">
+        <h2 id="entropy-title">3. Keep the dependence</h2>
+        <div class="metrics">
+          <article>
+            <h3>Whole-path entropy</h3>
+            <p id="path-entropy">-</p>
+            <small>H(S₀,…,Sₜ | all observations)</small>
+          </article>
+          <article>
+            <h3>Sum of state entropies</h3>
+            <p id="sum-entropy">-</p>
+            <small>This treats time positions as independent.</small>
+          </article>
+          <article>
+            <h3>Dependence gap</h3>
+            <p id="gap">-</p>
+            <small
+              >Equals the sum of posterior adjacent-state mutual
+              informations.</small
+            >
+          </article>
+        </div>
+        <p id="support"></p>
+        <p id="evidence"></p>
+        <p class="note">
+          Locked and independent controls have the same five state marginals.
+          Their whole-path entropies are ln(2) and 5·ln(2). Neither a MAP path
+          nor a marginal table alone gives the full path distribution. Entropy
+          is a property of this posterior, not a confidence or calibration
+          promise.
+        </p>
+        <div id="entropy-table" class="table-wrap"></div>
+      </section>
+      <section aria-labelledby="marginal-title">
+        <h2 id="marginal-title">4. Inspect every state and edge</h2>
+        <p>
+          Choose any numeric probability cell for its exact rational value.
+          Impossible conditional rows are undefined, not silently normalized.
+        </p>
+        <div id="states" class="table-wrap"></div>
+        <label for="edge-position"
+          >Adjacent edge, from time t to t+1 (zero-based)</label
+        ><select id="edge-position"></select>
+        <div id="edges" class="table-wrap"></div>
+        <div id="conditionals" class="table-wrap"></div>
+        <label for="exact">Selected exact value</label
+        ><textarea id="exact" readonly rows="3" aria-live="polite"></textarea>
+      </section>
+      <section aria-labelledby="trellis-title">
+        <h2 id="trellis-title">5. Check every decoding state</h2>
+        <p>
+          Each cell gives the best supported prefix ending in that state.
+          Initial, transition and emission support all count. No forward prefix
+          is a full-path probability. For product marginals, scores multiply
+          state marginals; they never become the joint posterior.
+        </p>
+        <label for="objective">Trellis objective</label
+        ><select id="objective">
+          <option value="map">MAP: maximize joint probability</option>
+          <option value="supported_matches">
+            Expected matches: maximize marginal sum
+          </option>
+          <option value="supported_product">
+            Product marginals: maximize marginal product
+          </option>
+        </select>
+        <div id="trellis" class="table-wrap"></div>
+        <p class="note">
+          All exact ties choose the lexicographically first whole index path,
+          not a local predecessor tie rule. The original floating Viterbi API
+          keeps its earlier rule unchanged.
+        </p>
+      </section>
+      <section aria-labelledby="replay-title">
+        <h2 id="replay-title">6. Take the evidence with you</h2>
+        <div class="actions">
+          <button id="copy" type="button">Copy input + report</button
+          ><button id="download" type="button">Download input + report</button>
+        </div>
+        <p id="copy-status" role="status"></p>
+        <details id="report-details">
+          <summary>Complete source-bound report</summary>
+          <label for="report"
+            >All exact message, marginal and decision cells, plus approximate
+            entropy</label
+          ><textarea id="report" readonly rows="14"></textarea>
+        </details>
+        <p>
+          Replay: <code>python -m chainlab.pathrisk input.json</code
+          ><br />Independent check:
+          <code>python -m chainlab.path_verify report.json</code>
+        </p>
+        <p>
+          Use the archive's <code>input</code> field as input.json, or check the
+          complete archive directly. The verifier imports no producer or
+          producer parser. It rebuilds suffix/prefix probabilities, all Bellman
+          alternatives and Decimal80 entropy. Exact fractions are checked
+          exactly; logarithms use an absolute 1e-10-nat tolerance.
+        </p>
+        <p>
+          <a href="https://github.com/midya8/chainlab/blob/main/PATHS.md"
+            >Equations, examples, attribution and limits</a
+          >
+          · <a href="https://github.com/midya8/chainlab">Source and tests</a>
+        </p>
+      </section>
+      <footer>
+        <p>
+          Standard finite-HMM inference and decision theory, independently
+          implemented. No parameter learning, new training run, new
+          state-recovery score, causal interpretation, calibrated uncertainty,
+          production or speed claim. Original trainer, fixture and prefix
+          inspector are unchanged. Rounded original-model examples are
+          explicitly different rational models.
+        </p>
+      </footer>
+    </main>
+    <script src="path-data.js"></script>
+    <script src="path-engine.js"></script>
+    <script src="path-app.js"></script>
+  </body>
+</html>
