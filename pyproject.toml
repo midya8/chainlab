@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chainlab"
-version = "0.2.0"
+version = "0.3.0"
 description = "Discrete hidden Markov inference, Viterbi and audited Baum-Welch from scratch"
 requires-python = ">=3.10"
 license = {text = "MIT"}
