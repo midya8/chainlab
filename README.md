@@ -25,7 +25,7 @@ The prefix-evidence checks cover 114 position/symbol controls (including no-ops)
 
 A separate exact-rational HMM compares MAP, supported expected matches, supported product marginals and unconstrained marginal modes. The default control gives three different supported paths, while marginal modes form an impossible one. Whole-path entropy stays separate from summed state entropies: two controls have the same state marginals but different path uncertainty. Full model and observation editing exposes every probability, conditional edge, decision state and source-bound report.
 
-Thirteen controls, 120 tiny exhaustive random checks, 150 generated native/BigInt comparisons and a standalone verifier keep probability and decoding claims exact. Entropy is approximate in nats, independently checked with Decimal80. Actual Chrome checks 296 state cells, 1,532 edge cells, 867 reachable decoding states, 39 layouts and two completed downloads. The full suite passes 58 Python and 10 Node tests, preserving the prefix-evidence checks. Current installed reproduction checks ten module origins, all nine original/evidence commands, both rational path commands, thirteen exact controls and 26 forgeries outside the checkout.
+Thirteen controls, 120 tiny exhaustive random checks, 150 generated native/BigInt comparisons and a standalone verifier check the exact rational probability and decoding fields. Entropy is approximate in nats, independently checked with Decimal80. Actual Chrome checks 296 state cells, 1,532 edge cells, 867 reachable decoding states, 39 layouts and two completed downloads. The full suite passes 58 Python and 10 Node tests, preserving the prefix-evidence checks. Current installed reproduction checks ten module origins, all nine original/evidence commands, both rational path commands, thirteen exact controls and 26 forgeries outside the checkout.
 
 The rational inspector has explicit state/sequence, input-size and fraction-work limits. Rounded original-model examples are labeled as different rational models, not new fits. No true-state recovery, calibrated uncertainty, novelty or quality improvement is claimed. Original floating inference, training, data, scores and the prefix inspector's computations remain unchanged.
 
@@ -213,8 +213,8 @@ implementation audit, not a new quality improvement or calibration result.
 The demo forecasts five steps after only the first 10 symbols of one test
 sequence; no future symbols enter those distributions.
 
-Filtering costs O(T*(N^2+N*M)) for alphabet size M and stores the prefix outputs.
-Forecasts add O(H*(N^2+N*M)); no xi matrices or backward pass are needed. Results
+Filtering costs `O(T*(N^2+N*M))` for alphabet size M and stores the prefix outputs.
+Forecasts add `O(H*(N^2+N*M))`; no xi matrices or backward pass are needed. Results
 are numerically normalized, with filtering mass-error diagnostics. Existing
 model bounds, impossible-prefix rejection and no input mutation still apply.
 No stateful streaming API, adaptive model update, calibrated forecast promise,
@@ -229,8 +229,8 @@ entries are finite in [0,1]; booleans, unknown fields, bad shapes, duplicate nam
 and unknown symbols reject. All arithmetic is binary64; negligible posterior
 mass can underflow to zero even though log likelihood remains finite.
 
-Inference/decoding time O(T*N^2). Full transition posterior output and training
-E-step storage use O(T*N^2), not a streaming low-memory implementation. EM
+Inference/decoding time `O(T*N^2)`. Full transition posterior output and training
+E-step storage use `O(T*N^2)`, not a streaming low-memory implementation. EM
 multiplies that work by sequences and accepted/proposed iterations. No Gaussian
 emissions, continuous states, priors, missing observations, neural emissions,
 variable state count, persistent streaming state, calibrated forecasting, beam search or state-label
