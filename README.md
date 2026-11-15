@@ -25,7 +25,7 @@ The prefix-evidence checks cover 114 position/symbol controls (including no-ops)
 
 A separate exact-rational HMM compares MAP, supported expected matches, supported product marginals and unconstrained marginal modes. The default control gives three different supported paths, while marginal modes form an impossible one. Whole-path entropy stays separate from summed state entropies: two controls have the same state marginals but different path uncertainty. Full model and observation editing exposes every probability, conditional edge, decision state and source-bound report.
 
-Thirteen controls, 120 tiny exhaustive random checks, 150 generated native/BigInt comparisons and a standalone verifier check the exact rational probability and decoding fields. Entropy is approximate in nats, independently checked with Decimal80. Actual Chrome checks 296 state cells, 1,532 edge cells, 867 reachable decoding states, 39 layouts and two completed downloads. The full suite passes 64 Python and 10 Node tests, preserving the prefix-evidence checks. Current installed reproduction checks eleven module origins, all nine original/evidence commands, both rational path commands, thirteen exact controls and 26 forgeries outside the checkout.
+Thirteen controls, 120 tiny exhaustive random checks, 150 generated native/BigInt comparisons and a standalone verifier check the exact rational probability and decoding fields. Entropy is approximate in nats, independently checked with Decimal80. Actual Chrome checks 296 state cells, 1,532 edge cells, 867 reachable decoding states, 39 layouts and two completed downloads. The full suite passes 64 Python and 10 Node tests, preserving the prefix-evidence checks. Current installed reproduction checks eleven module imports, all nine original/evidence commands, both rational path commands, thirteen exact controls and 26 forgeries outside the checkout.
 
 The rational inspector has explicit state/sequence, input-size and fraction-work limits. Rounded original-model examples are labeled as different rational models, not new fits. No true-state recovery, calibrated uncertainty, novelty or quality improvement is claimed. Original floating inference, training, data, scores and the prefix inspector's computations remain unchanged.
 
@@ -297,7 +297,8 @@ permutation; input/schema bounds; no mutation; artifact/CLI round trips and
 repeatable measured controls. Prefix filtering adds exhaustive-prefix and future-path
 references, predictive-score equality, future-information separation, an underflow
 rescue case, horizon indexing, dependent-marginal counterexample and CLI bounds.
-The current 58-test Python suite retains those checks and adds both inspectors.
+The current 64-test Python suite retains those checks, both inspectors and the
+exact visit-count laws.
 Python 3.10-3.13 CI plus an offline demo regenerates
 the SVG and checks it against the committed output.
 
