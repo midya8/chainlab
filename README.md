@@ -299,6 +299,13 @@ references, predictive-score equality, future-information separation, an underfl
 rescue case, horizon indexing, dependent-marginal counterexample and CLI bounds.
 The current 64-test Python suite retains those checks, both inspectors and the
 exact visit-count laws.
+A separate CI job builds a fresh wheel and runs all 64 Python tests outside the
+checkout. It checks all 11 installed module paths before and after, compares nine
+complete reports through both CLI entrypoints and reproduces the SVG. The existing
+installed path, visit-count and forgery checks still run. Run
+`python examples/check_installed.py` locally; building needs pip and setuptools.
+The installed package has no runtime dependencies.
+
 Python 3.10-3.13 CI plus an offline demo regenerates
 the SVG and checks it against the committed output.
 
