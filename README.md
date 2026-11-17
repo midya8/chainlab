@@ -1,11 +1,11 @@
-# ChainLab
+# Hidden markov
 
-ChainLab separates three questions about a hidden Markov model: what was observed, which state path to choose and how much uncertainty remains over whole paths. It includes a binary64 HMM trainer, a prefix-evidence inspector and a separate exact-rational path workbench. Dependency-free Python, offline browser tools and reproducible synthetic controls. Standard HMM theory, not a new method.
+Hidden markov separates three questions about a hidden Markov model: what was observed, which state path to choose and how much uncertainty remains over whole paths. It includes a binary64 HMM trainer, a prefix-evidence inspector and a separate exact-rational path workbench. Dependency-free Python, offline browser tools and reproducible synthetic controls. Standard HMM theory, not a new method.
 
 | Question | Start here | Watch for |
 | --- | --- | --- |
-| What did the observed prefix support, without future symbols? | [Prefix-evidence inspector](https://midya8.github.io/chainlab/) | Filtering and prefix-only forecasts use less evidence than full-window smoothing and Viterbi. |
-| Which supported path fits the decision's loss? | [Path workbench](https://midya8.github.io/chainlab/paths.html) | MAP, supported expected matches and supported product marginals can choose different paths. Marginal modes can be impossible. |
+| What did the observed prefix support, without future symbols? | [Prefix-evidence inspector](https://midya8.github.io/hidden-markov/) | Filtering and prefix-only forecasts use less evidence than full-window smoothing and Viterbi. |
+| Which supported path fits the decision's loss? | [Path workbench](https://midya8.github.io/hidden-markov/paths.html) | MAP, supported expected matches and supported product marginals can choose different paths. Marginal modes can be impossible. |
 | What does training change on the fixed synthetic fixture? | [Run the training demo](#learn-sequences-without-hiding-the-controls) | Compare the trained model with its supplied initialization, training-only iid control and generating-model reference. |
 
 The current suite has **64 Python tests and 10 Node tests**, including actual Chrome for both inspectors. The original floating-point trainer and the rational workbench have different numerical contracts and tie rules, described below. Browser edits do not retrain the model or replace the original test scores.
@@ -21,7 +21,7 @@ The prefix-evidence checks cover 114 position/symbol controls (including no-ops)
 
 ## Choose a path without hiding its uncertainty
 
-[Open the path workbench](https://midya8.github.io/chainlab/paths.html) or read [PATHS.md](PATHS.md).
+[Open the path workbench](https://midya8.github.io/hidden-markov/paths.html) or read [PATHS.md](PATHS.md).
 
 A separate exact-rational HMM compares MAP, supported expected matches, supported product marginals and unconstrained marginal modes. The default control gives three different supported paths, while marginal modes form an impossible one. Whole-path entropy stays separate from summed state entropies: two controls have the same state marginals but different path uncertainty. Full model and observation editing exposes every probability, conditional edge, decision state and source-bound report.
 
